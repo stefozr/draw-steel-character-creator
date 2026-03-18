@@ -257,10 +257,22 @@ DS.App = (function() {
 
     // Player header
     var adminOn = DS.Player.isAdmin();
-    var html = '<div class="player-header">' +
+    var html = '';
+
+    // Admin toggle — only visible to Stefan
+    if (playerName === 'Stefan') {
+      html += '<div class="admin-toggle-wrap">' +
+        '<label class="admin-toggle" id="toggle-admin">' +
+          '<input type="checkbox"' + (adminOn ? ' checked' : '') + '>' +
+          '<span class="admin-toggle-slider"></span>' +
+          '<span class="admin-toggle-label">Admin</span>' +
+        '</label>' +
+      '</div>';
+    }
+
+    html += '<div class="player-header">' +
       '<span class="player-label">Playing as: <strong>' + DS.Renderer.esc(playerName) + '</strong></span>' +
       ' <a href="#" class="player-change-link" id="change-player-name">Change</a>' +
-      ' <a href="#" class="player-change-link" id="toggle-admin">' + (adminOn ? 'Admin: ON' : 'Admin: OFF') + '</a>' +
     '</div>';
 
     // Split into mine and others
@@ -358,11 +370,10 @@ DS.App = (function() {
       });
     }
 
-    var adminLink = container.querySelector('#toggle-admin');
-    if (adminLink) {
-      adminLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        DS.Player.setAdmin(!DS.Player.isAdmin());
+    var adminToggle = container.querySelector('#toggle-admin input');
+    if (adminToggle) {
+      adminToggle.addEventListener('change', function() {
+        DS.Player.setAdmin(this.checked);
         renderCharacterList();
       });
     }

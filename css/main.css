@@ -161,6 +161,53 @@ a:hover { text-decoration: underline; }
   cursor: pointer;
 }
 
+/* Admin toggle — top right */
+.admin-toggle-wrap {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+}
+.admin-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+.admin-toggle input { display: none; }
+.admin-toggle-slider {
+  width: 36px;
+  height: 20px;
+  background: var(--color-border);
+  border-radius: 10px;
+  position: relative;
+  transition: background 0.2s;
+}
+.admin-toggle-slider::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: var(--color-surface);
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+.admin-toggle input:checked + .admin-toggle-slider {
+  background: var(--color-primary);
+}
+.admin-toggle input:checked + .admin-toggle-slider::after {
+  transform: translateX(16px);
+}
+.admin-toggle-label {
+  font-size: 0.8rem;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 /* === WIZARD NAV === */
 .wizard-nav {
   display: flex;
