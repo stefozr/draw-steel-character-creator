@@ -467,6 +467,7 @@ DS.Steps.Career = (function() {
     }
 
     sidebarEl.innerHTML = html;
+    if (sidebarWrap) sidebarWrap.classList.add('sidebar-active');
 
     // Wire language dropdowns
     sidebarEl.querySelectorAll('.career-lang-select').forEach(function(sel) {

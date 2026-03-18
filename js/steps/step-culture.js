@@ -142,6 +142,8 @@ DS.Steps.Culture = (function() {
     html += renderAspectSidebar('Upbringing', 'upbringing', char.culture.upbringing, cultures.upbringings, char);
 
     sidebarEl.innerHTML = html;
+    var sidebarWrap = document.getElementById('wizard-sidebar');
+    if (sidebarWrap) sidebarWrap.classList.add('sidebar-active');
 
     // Wire dropdown changes
     sidebarEl.querySelectorAll('.culture-skill-select').forEach(function(sel) {

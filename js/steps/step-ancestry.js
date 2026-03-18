@@ -83,6 +83,8 @@ DS.Steps.Ancestry = (function() {
     html += '<div id="sidebar-trait-picker"></div>';
 
     container.innerHTML = html;
+    var sidebarWrap = document.getElementById('wizard-sidebar');
+    if (sidebarWrap) sidebarWrap.classList.add('sidebar-active');
 
     // Render trait picker into sidebar
     if (ancestry.purchasedTraits && ancestry.purchasedTraits.length) {
