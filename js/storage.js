@@ -90,6 +90,155 @@ DS.Storage = (function() {
     URL.revokeObjectURL(url);
   }
 
+  function exportFoundryVTT(character) {
+    var computed = character.computed || {};
+    var char = character;
+
+    // Resolve ancestry name
+    var ancestryName = '';
+    if (char.ancestry && char.ancestry.id) {
+      var anc = DS.Data.Ancestries.find(function(a) { return a.id === char.ancestry.id; });
+      if (anc) ancestryName = anc.name;
+    }
+
+    // Resolve culture names
+    var culture = {};
+    if (char.culture) {
+      if (char.culture.environment) {
+        var env = DS.Data.Cultures.environments.find(function(e) { return e.id === char.culture.environment; });
+        culture.environment = env ? env.name : char.culture.environment;
+      }
+      if (char.culture.organization) {
+        var org = DS.Data.Cultures.organizations.find(function(o) { return o.id === char.culture.organization; });
+        culture.organization = org ? org.name : char.culture.organization;
+      }
+      if (char.culture.upbringing) {
+        var upb = DS.Data.Cultures.upbringings.find(function(u) { return u.id === char.culture.upbringing; });
+        culture.upbringing = upb ? upb.name : char.culture.upbringing;
+      }
+      culture.language = char.culture.language || '';
+    }
+
+    // Resolve career name
+    var careerName = '';
+    if (char.career && char.career.id) {
+      var car = DS.Data.Careers.find(function(c) { return c.id === char.career.id; });
+      if (car) careerName = car.name;
+    }
+
+    // Resolve class and subclass names
+    var className = '';
+    var subclassName = '';
+    if (char.class && char.class.id) {
+      var cls = DS.Data.Classes[char.class.id];
+      if (cls) {
+        className = cls.name;
+        if (char.class.subclass && cls.subclasses) {
+          var sub = cls.subclasses.find(function(s) { return s.id === char.class.subclass; });
+          if (sub) subclassName = sub.name;
+        }
+        // Conduit dual domains
+        if (char.class.id === 'conduit' && char.class.levelChoices && char.class.levelChoices.domains) {
+          var domainNames = [];
+          char.class.levelChoices.domains.forEach(function(domId) {
+            var domObj = cls.subclasses.find(function(s) { return s.id === domId; });
+            if (domObj) domainNames.push(domObj.name);
+          });
+          if (domainNames.length) subclassName = domainNames.join(' & ');
+        }
+      }
+    }
+
+    // Resolve kit name
+    var kitName = '';
+    if (char.kit && char.kit.id) {
+      var kit = DS.Data.Kits.find(function(k) { return k.id === char.kit.id; });
+      if (kit) kitName = kit.name;
+    }
+
+    // Resolve complication name
+    var complicationName = '';
+    if (char.complication && char.complication.id) {
+      var comp = DS.Data.Complications.find(function(c) { return c.id === char.complication.id; });
+      if (comp) complicationName = comp.name;
+    }
+
+    // Collect all ability names
+    var abilities = [];
+    if (char.class && char.class.signatureAbilities) {
+      char.class.signatureAbilities.forEach(function(name) {
+        if (abilities.indexOf(name) === -1) abilities.push(name);
+      });
+    }
+    if (char.class && char.class.heroicAbilities) {
+      var ha = char.class.heroicAbilities;
+      Object.keys(ha).forEach(function(cost) {
+        (ha[cost] || []).forEach(function(name) {
+          if (abilities.indexOf(name) === -1) abilities.push(name);
+        });
+      });
+    }
+
+    // Collect perks
+    var perks = [];
+    if (char.career && char.career.perk) {
+      var cp = DS.Data.PerksList.find(function(p) { return p.id === char.career.perk || p.name === char.career.perk; });
+      if (cp) perks.push(cp.name);
+    }
+    var lc = char.class && char.class.levelChoices || {};
+    Object.keys(lc).forEach(function(lvl) {
+      if (lc[lvl] && lc[lvl].perk) {
+        var pd = DS.Data.PerksList.find(function(p) { return p.id === lc[lvl].perk; });
+        if (pd && perks.indexOf(pd.name) === -1) perks.push(pd.name);
+      }
+    });
+
+    // Resolve size
+    var sizeRaw = computed.size || '1M';
+    var sizeStr = String(sizeRaw);
+    var sizeValue = parseFloat(sizeStr) || 1;
+    var sizeLetter = sizeStr.replace(/[^A-Za-z]/g, '') || 'M';
+
+    // Build export object
+    var result = {
+      format: 'drawsteel-foundry-v1',
+      name: (char.details && char.details.heroName) || char.name || 'Unnamed Hero',
+      level: char.level || 1,
+      ancestry: { name: ancestryName },
+      culture: culture,
+      career: { name: careerName },
+      class: { name: className, subclass: subclassName },
+      kit: { name: kitName },
+      complication: { name: complicationName },
+      characteristics: char.class && char.class.characteristics || { might: 0, agility: 0, reason: 0, intuition: 0, presence: 0 },
+      skills: computed.skills || [],
+      languages: computed.languages || [],
+      stamina: { max: computed.stamina || 0, winded: computed.winded || 0, recoveryValue: computed.recoveryValue || 0, recoveries: computed.recoveries || 0 },
+      speed: computed.speed || 5,
+      stability: computed.stability || 0,
+      size: { value: sizeValue, letter: sizeLetter },
+      abilities: abilities,
+      perks: perks,
+      biography: {
+        pronouns: (char.details && char.details.pronouns) || '',
+        appearance: (char.details && char.details.appearance) || '',
+        personality: (char.details && char.details.personality) || '',
+        backstory: (char.details && char.details.backstory) || ''
+      },
+      portrait: (char.details && char.details.portrait) || ''
+    };
+
+    var blob = new Blob([JSON.stringify(result, null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = (result.name || 'character') + '-foundry.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
   function parseImportFile(file, callback) {
     var reader = new FileReader();
     reader.onload = function(e) {
@@ -173,6 +322,7 @@ DS.Storage = (function() {
     remove: remove,
     load: load,
     exportJSON: exportJSON,
+    exportFoundryVTT: exportFoundryVTT,
     parseImportFile: parseImportFile,
     findByName: findByName,
     getNextIncrementalName: getNextIncrementalName,

@@ -153,6 +153,7 @@ DS.Steps.Summary = (function() {
     html += (inSheetMode && char.finished && isOwner ? '<button class="btn btn-secondary btn-sm" id="summary-edit">&#9998; Edit Character</button>' : '') +
         (inSheetMode && char.class.id && char.level < 10 && isOwner ? '<button class="btn btn-primary btn-sm" id="summary-levelup">Level Up</button>' : '') +
         '<button class="btn btn-secondary btn-sm" id="summary-export">Export JSON</button>' +
+        '<button class="btn btn-secondary btn-sm" id="summary-export-foundry">Export for FoundryVTT</button>' +
       '</div>' +
     '</div>';
 
@@ -653,6 +654,11 @@ DS.Steps.Summary = (function() {
     // Wire export button
     document.getElementById('summary-export').addEventListener('click', function() {
       DS.Storage.exportJSON(DS.State.get());
+    });
+
+    // Wire FoundryVTT export button
+    document.getElementById('summary-export-foundry').addEventListener('click', function() {
+      DS.Storage.exportFoundryVTT(DS.State.get());
     });
 
     // Wire level up button
