@@ -65,7 +65,7 @@ DS.App = (function() {
 
     var container = document.getElementById('levelup-content');
     var clsName = char.class.id.charAt(0).toUpperCase() + char.class.id.slice(1);
-    container.style.setProperty('--step-bg', "url('resources/classes/" + clsName + ".png')");
+    container.style.setProperty('--step-bg', "url('../resources/classes/" + clsName + ".png')");
     DS.LevelUp.render(container, char, classData, nextLevel);
 
     // Wire buttons
@@ -141,7 +141,7 @@ DS.App = (function() {
     var char = DS.State.getRef();
     if (char && char.class && char.class.id) {
       var className = char.class.id.charAt(0).toUpperCase() + char.class.id.slice(1);
-      summaryEl.style.setProperty('--step-bg', "url('resources/classes/" + className + ".png')");
+      summaryEl.style.setProperty('--step-bg', "url('../resources/classes/" + className + ".png')");
     } else {
       summaryEl.style.removeProperty('--step-bg');
     }
@@ -184,7 +184,7 @@ DS.App = (function() {
 
     var container = document.getElementById('levelup-content');
     var clsName = char.class.id.charAt(0).toUpperCase() + char.class.id.slice(1);
-    container.style.setProperty('--step-bg', "url('resources/classes/" + clsName + ".png')");
+    container.style.setProperty('--step-bg', "url('../resources/classes/" + clsName + ".png')");
     DS.LevelUp.render(container, char, classData, level, oldChoices);
 
     // Wire buttons
