@@ -298,6 +298,10 @@ a:hover { text-decoration: underline; }
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--color-border) var(--color-surface);
+  display: none;
+}
+.wizard-sidebar.sidebar-active {
+  display: block;
 }
 .wizard-sidebar::-webkit-scrollbar { width: 6px; }
 .wizard-sidebar::-webkit-scrollbar-track { background: var(--color-surface); }
@@ -603,6 +607,7 @@ a:hover { text-decoration: underline; }
 
 /* === SIDEBAR TOGGLE & BACKDROP (hidden by default on desktop) === */
 .sidebar-toggle { display: none; }
+.wizard-footer .sidebar-toggle { margin-left: auto; }
 .sidebar-backdrop { display: none; }
 
 /* === RESPONSIVE === */
@@ -610,6 +615,7 @@ a:hover { text-decoration: underline; }
   .sidebar-toggle { display: flex; }
 
   .wizard-sidebar {
+    display: block;
     position: fixed;
     top: 0;
     right: 0;

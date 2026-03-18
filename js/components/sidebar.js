@@ -9,6 +9,14 @@ DS.Sidebar = (function() {
     return el;
   }
 
+  function setSidebarActive(active) {
+    var sidebar = document.getElementById('wizard-sidebar');
+    if (sidebar) {
+      if (active) sidebar.classList.add('sidebar-active');
+      else sidebar.classList.remove('sidebar-active');
+    }
+  }
+
   function show(options) {
     var container = getEl();
     if (!container) return;
@@ -51,6 +59,7 @@ DS.Sidebar = (function() {
     }
 
     container.innerHTML = html || '<p class="sidebar-empty">Select an item to see its description.</p>';
+    setSidebarActive(true);
   }
 
   function clear() {
@@ -58,6 +67,7 @@ DS.Sidebar = (function() {
     if (container) {
       container.innerHTML = '<p class="sidebar-empty">Select an item to see its description.</p>';
     }
+    setSidebarActive(false);
     closeDrawer();
   }
 
@@ -150,6 +160,7 @@ DS.Sidebar = (function() {
     }
 
     container.innerHTML = html;
+    setSidebarActive(true);
   }
 
   // Convenience: show kit info
@@ -198,6 +209,7 @@ DS.Sidebar = (function() {
     }
 
     container.innerHTML = html;
+    setSidebarActive(true);
 
     // Render ability card into the placeholder
     if (kit.signatureAbility) {
@@ -224,6 +236,7 @@ DS.Sidebar = (function() {
       '</div>';
 
     container.innerHTML = html;
+    setSidebarActive(true);
   }
 
   var drawerOpen = false;
