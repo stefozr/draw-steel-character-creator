@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draw Steel - Character Creator</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Home Screen -->
+    <div id="home-screen" class="screen active">
+      <header class="home-header">
+        <h1>Draw Steel</h1>
+        <p class="subtitle">Character Creator</p>
+      </header>
+      <div class="home-actions">
+        <button id="btn-new-character" class="btn btn-primary btn-lg">New Character</button>
+        <div class="home-actions-row">
+          <button id="btn-import" class="btn btn-secondary">Import JSON</button>
+          <input type="file" id="import-file" accept=".json" hidden>
+        </div>
+        <button id="btn-rules" class="btn btn-secondary btn-lg">Rules Cheat Sheet</button>
+      </div>
+      <div id="character-list" class="character-list">
+        <!-- Saved characters rendered here -->
+      </div>
+    </div>
+
+    <!-- Wizard Screen -->
+    <div id="wizard-screen" class="screen">
+      <nav class="wizard-nav">
+        <button id="btn-home" class="btn btn-icon" title="Back to Home">&larr;</button>
+        <div class="progress-bar">
+          <div class="progress-steps" id="progress-steps">
+            <button class="progress-step active" data-step="ancestry">Ancestry</button>
+            <button class="progress-step" data-step="culture">Culture</button>
+            <button class="progress-step" data-step="career">Career</button>
+            <button class="progress-step" data-step="class">Class</button>
+            <button class="progress-step" data-step="kit">Kit</button>
+            <button class="progress-step" data-step="complication">Complication</button>
+            <button class="progress-step" data-step="details">Details</button>
+            <button class="progress-step" data-step="summary">Summary</button>
+          </div>
+        </div>
+      </nav>
+
+      <div class="wizard-layout">
+        <div class="wizard-main">
+          <main class="wizard-content">
+            <div class="step-container" id="step-ancestry"></div>
+            <div class="step-container" id="step-culture"></div>
+            <div class="step-container" id="step-career"></div>
+            <div class="step-container" id="step-class"></div>
+            <div class="step-container" id="step-kit"></div>
+            <div class="step-container" id="step-complication"></div>
+            <div class="step-container" id="step-details"></div>
+            <div class="step-container" id="step-summary"></div>
+          </main>
+          <footer class="wizard-footer">
+            <button id="btn-prev" class="btn btn-secondary">Previous</button>
+            <button id="btn-next" class="btn btn-primary">Next</button>
+          </footer>
+        </div>
+        <aside class="wizard-sidebar" id="wizard-sidebar">
+          <div class="sidebar-content" id="sidebar-content">
+            <p class="text-dim text-sm">Select an item to see its description.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Rules Screen -->
+    <div id="rules-screen" class="screen">
+      <nav class="rules-nav">
+        <button id="btn-rules-back" class="btn btn-icon" title="Back to Home">&larr;</button>
+        <h3 class="text-primary">Rules Cheat Sheet</h3>
+        <div class="rules-search-wrap">
+          <svg class="rules-search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="rules-search" class="rules-search" placeholder="Search rules...">
+          <button id="rules-search-clear" class="rules-search-clear hidden" title="Clear">&times;</button>
+        </div>
+      </nav>
+      <div id="rules-no-results" class="rules-no-results hidden">No matching rules found.</div>
+      <main class="rules-content" id="rules-content"></main>
+    </div>
+
+    <!-- Level Up Screen -->
+    <div id="levelup-screen" class="screen">
+      <nav class="levelup-nav">
+        <button id="btn-levelup-back" class="btn btn-icon">&larr;</button>
+        <h3 id="levelup-title" class="text-primary">Level Up</h3>
+      </nav>
+      <main class="wizard-content" id="levelup-content"></main>
+      <footer class="wizard-footer">
+        <button id="btn-levelup-cancel" class="btn btn-secondary">Cancel</button>
+        <button id="btn-levelup-confirm" class="btn btn-primary" disabled>Confirm Level Up</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <!-- Namespace init -->
+  <script>var DS = window.DS || {}; DS.Data = {}; DS.Steps = {}; DS.Components = {};</script>
+
+  <!-- Data files -->
+  <script src="data/ancestries.js"></script>
+  <script src="data/cultures.js"></script>
+  <script src="data/careers.js"></script>
+  <script src="data/kits.js"></script>
+  <script src="data/beast-kits.js"></script>
+  <script src="data/perks.js"></script>
+  <script src="data/complications.js"></script>
+  <script src="data/skills.js"></script>
+  <script src="data/languages.js"></script>
+  <script src="data/classes/fury.js"></script>
+  <script src="data/classes/conduit.js"></script>
+  <script src="data/classes/shadow.js"></script>
+  <script src="data/classes/censor.js"></script>
+  <script src="data/classes/elementalist.js"></script>
+  <script src="data/classes/null.js"></script>
+  <script src="data/classes/tactician.js"></script>
+  <script src="data/classes/talent.js"></script>
+  <script src="data/classes/troubadour.js"></script>
+
+  <!-- Core -->
+  <script src="js/state.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/calculator.js"></script>
+  <script src="js/renderer.js"></script>
+
+  <!-- Components -->
+  <script src="js/components/ability-card.js"></script>
+  <script src="js/components/trait-picker.js"></script>
+  <script src="js/components/choice-grid.js"></script>
+  <script src="js/components/sidebar.js"></script>
+
+  <!-- Class Sections -->
+  <script src="js/class-sections/_registry.js"></script>
+  <script src="js/class-sections/common-subclass.js"></script>
+  <script src="js/class-sections/common-characteristics.js"></script>
+  <script src="js/class-sections/common-skills.js"></script>
+  <script src="js/class-sections/common-signature-abilities.js"></script>
+  <script src="js/class-sections/common-heroic-abilities.js"></script>
+  <script src="js/class-sections/class-features.js"></script>
+  <script src="js/class-sections/growing-ferocity.js"></script>
+  <script src="js/class-sections/discipline-mastery.js"></script>
+  <script src="js/class-sections/null-field.js"></script>
+  <script src="js/class-sections/dual-domain.js"></script>
+  <script src="js/class-sections/order-domain.js"></script>
+  <script src="js/class-sections/routines.js"></script>
+  <script src="js/class-sections/mark-field-arsenal.js"></script>
+  <script src="js/class-sections/strain-display.js"></script>
+  <script src="js/class-sections/persistent-magic.js"></script>
+
+  <!-- Steps -->
+  <script src="js/steps/step-ancestry.js"></script>
+  <script src="js/steps/step-culture.js"></script>
+  <script src="js/steps/step-career.js"></script>
+  <script src="js/steps/step-class.js"></script>
+  <script src="js/steps/step-kit.js"></script>
+  <script src="js/steps/step-complication.js"></script>
+  <script src="js/steps/step-details.js"></script>
+  <script src="js/steps/step-summary.js"></script>
+  <script src="js/steps/step-level-up.js"></script>
+
+  <!-- Rules -->
+  <script src="js/rules.js"></script>
+
+  <!-- App entry -->
+  <script src="js/wizard.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
