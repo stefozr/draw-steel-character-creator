@@ -606,13 +606,13 @@ a:hover { text-decoration: underline; }
 .sheet-mode .wizard-layout { max-width: var(--max-width); }
 
 /* === SIDEBAR TOGGLE & BACKDROP (hidden by default on desktop) === */
-.sidebar-toggle { display: none; }
-.wizard-footer .sidebar-toggle { margin-left: auto; }
+.wizard-footer .sidebar-toggle { display: none; }
+.wizard-footer #btn-next { margin-left: auto; }
 .sidebar-backdrop { display: none; }
 
 /* === RESPONSIVE === */
 @media (max-width: 900px) {
-  .sidebar-toggle { display: flex; }
+  .wizard-footer .sidebar-toggle { display: flex; }
 
   .wizard-sidebar {
     display: block;
