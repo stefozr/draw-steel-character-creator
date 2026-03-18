@@ -34,6 +34,12 @@ DS.Wizard = (function() {
       DS.Storage.autosave();
       DS.App.showHome();
     });
+    document.getElementById('btn-sidebar-toggle').addEventListener('click', function() {
+      DS.Sidebar.toggleDrawer();
+    });
+    document.getElementById('sidebar-backdrop').addEventListener('click', function() {
+      DS.Sidebar.closeDrawer();
+    });
 
     // Wire up progress step clicks
     var progressBtns = document.querySelectorAll('.progress-step');

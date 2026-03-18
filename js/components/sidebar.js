@@ -58,6 +58,7 @@ DS.Sidebar = (function() {
     if (container) {
       container.innerHTML = '<p class="sidebar-empty">Select an item to see its description.</p>';
     }
+    closeDrawer();
   }
 
   function formatSize(size) {
@@ -225,6 +226,32 @@ DS.Sidebar = (function() {
     container.innerHTML = html;
   }
 
+  var drawerOpen = false;
+
+  function openDrawer() {
+    var sidebar = document.getElementById('wizard-sidebar');
+    var backdrop = document.getElementById('sidebar-backdrop');
+    if (sidebar) sidebar.classList.add('drawer-open');
+    if (backdrop) backdrop.classList.add('active');
+    var btn = document.getElementById('btn-sidebar-toggle');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+    drawerOpen = true;
+  }
+
+  function closeDrawer() {
+    var sidebar = document.getElementById('wizard-sidebar');
+    var backdrop = document.getElementById('sidebar-backdrop');
+    if (sidebar) sidebar.classList.remove('drawer-open');
+    if (backdrop) backdrop.classList.remove('active');
+    var btn = document.getElementById('btn-sidebar-toggle');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+    drawerOpen = false;
+  }
+
+  function toggleDrawer() {
+    if (drawerOpen) closeDrawer(); else openDrawer();
+  }
+
   return {
     show: show,
     clear: clear,
@@ -232,6 +259,9 @@ DS.Sidebar = (function() {
     showCareer: showCareer,
     showClass: showClass,
     showKit: showKit,
-    showComplication: showComplication
+    showComplication: showComplication,
+    openDrawer: openDrawer,
+    closeDrawer: closeDrawer,
+    toggleDrawer: toggleDrawer
   };
 })();

@@ -30,6 +30,7 @@ DS.Steps.Class = (function() {
           DS.State.update('class.heroicAbilities', { 3: [], 5: [], 7: [], 9: [], 11: [] });
           DS.State.update('class.skills', []);
           DS.State.update('class.levelChoices', {});
+          DS.State.update('level', 1);
           DS.Wizard.cascadeReset('class');
         }
         var c = classes[id];

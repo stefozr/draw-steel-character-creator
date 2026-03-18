@@ -146,7 +146,7 @@ a:hover { text-decoration: underline; }
 .char-card-info { flex: 1; }
 .char-card-name { font-weight: 600; font-size: 1.1rem; }
 .char-card-meta { color: var(--color-text-dim); font-size: 0.85rem; }
-.char-card-actions { display: flex; gap: 0.5rem; }
+.char-card-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 
 .player-header {
   max-width: var(--max-width);
@@ -601,9 +601,40 @@ a:hover { text-decoration: underline; }
 .sheet-mode .wizard-footer { display: none; }
 .sheet-mode .wizard-layout { max-width: var(--max-width); }
 
+/* === SIDEBAR TOGGLE & BACKDROP (hidden by default on desktop) === */
+.sidebar-toggle { display: none; }
+.sidebar-backdrop { display: none; }
+
 /* === RESPONSIVE === */
 @media (max-width: 900px) {
-  .wizard-sidebar { display: none; }
+  .sidebar-toggle { display: flex; }
+
+  .wizard-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(320px, 85vw);
+    z-index: 200;
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+  }
+  .wizard-sidebar.drawer-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-backdrop.active {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 199;
+  }
+
+  .no-sidebar .sidebar-toggle,
+  .no-sidebar .sidebar-backdrop { display: none !important; }
+  .sheet-mode .sidebar-toggle { display: none; }
+
   .wizard-layout { max-width: var(--max-width); }
   .sheet-mode .wizard-layout { max-width: var(--max-width); }
 }
@@ -614,4 +645,22 @@ a:hover { text-decoration: underline; }
   .selection-grid { grid-template-columns: 1fr; }
   .home-header h1 { font-size: 2rem; }
   .wizard-content { padding: 1rem 0.75rem 5rem; }
+  .progress-bar {
+    -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+    mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  }
+  .progress-step {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.7rem;
+  }
+  .char-card { flex-wrap: wrap; }
+  .char-card-actions {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .wizard-footer { gap: 0.5rem; }
+  .wizard-footer .btn { flex: 1; min-height: 44px; }
 }

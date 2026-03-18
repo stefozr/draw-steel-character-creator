@@ -79,6 +79,7 @@ DS.Steps.Culture = (function() {
         DS.State.update('culture.environment', id);
         clearAspectSkill('environment', id, cultures.environments);
         render(container);
+        if (window.innerWidth <= 900) DS.Sidebar.openDrawer();
         if (DS.Wizard.refreshNextButton) DS.Wizard.refreshNextButton();
       }
     });
@@ -91,6 +92,7 @@ DS.Steps.Culture = (function() {
         DS.State.update('culture.organization', id);
         clearAspectSkill('organization', id, cultures.organizations);
         render(container);
+        if (window.innerWidth <= 900) DS.Sidebar.openDrawer();
         if (DS.Wizard.refreshNextButton) DS.Wizard.refreshNextButton();
       }
     });
@@ -103,6 +105,7 @@ DS.Steps.Culture = (function() {
         DS.State.update('culture.upbringing', id);
         clearAspectSkill('upbringing', id, cultures.upbringings);
         render(container);
+        if (window.innerWidth <= 900) DS.Sidebar.openDrawer();
         if (DS.Wizard.refreshNextButton) DS.Wizard.refreshNextButton();
       }
     });

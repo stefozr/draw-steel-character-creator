@@ -34,6 +34,7 @@ DS.Steps.Ancestry = (function() {
         }
         var a = ancestries.find(function(x) { return x.id === id; });
         if (a && DS.Sidebar) showAncestrySidebar(a, DS.State.getRef());
+        if (window.innerWidth <= 900) DS.Sidebar.openDrawer();
         render(container);
       },
       renderItem: function(item) {
