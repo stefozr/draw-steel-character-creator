@@ -20,11 +20,11 @@ DS.Wizard = (function() {
     // Preload step background images
     ['Ancestry','Culture','Career','Class','Kit','Complication','Details','Summary'].forEach(function(name) {
       var img = new Image();
-      img.src = 'resources/images/' + name + '.png';
+      img.src = 'resources/backgrounds/' + name + '.png';
     });
     ['Censor','Conduit','Elementalist','Fury','Null','Shadow','Tactician','Talent','Troubadour'].forEach(function(name) {
       var img = new Image();
-      img.src = 'resources/images/classes/' + name + '.png';
+      img.src = 'resources/classes/' + name + '.png';
     });
 
     // Wire up nav buttons

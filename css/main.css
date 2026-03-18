@@ -361,14 +361,14 @@ a:hover { text-decoration: underline; }
 .step-container.active { display: block; }
 
 /* Step background images */
-#step-ancestry    { --step-bg: url('../resources/images/Ancestry.png'); }
-#step-culture     { --step-bg: url('../resources/images/Culture.png'); }
-#step-career      { --step-bg: url('../resources/images/Career.png'); }
-#step-class       { --step-bg: url('../resources/images/Class.png'); }
-#step-kit         { --step-bg: url('../resources/images/Kit.png'); }
-#step-complication { --step-bg: url('../resources/images/Complication.png'); }
-#step-details     { --step-bg: url('../resources/images/Details.png'); }
-#step-summary     { --step-bg: url('../resources/images/Summary.png'); }
+#step-ancestry    { --step-bg: url('../resources/backgrounds/Ancestry.png'); }
+#step-culture     { --step-bg: url('../resources/backgrounds/Culture.png'); }
+#step-career      { --step-bg: url('../resources/backgrounds/Career.png'); }
+#step-class       { --step-bg: url('../resources/backgrounds/Class.png'); }
+#step-kit         { --step-bg: url('../resources/backgrounds/Kit.png'); }
+#step-complication { --step-bg: url('../resources/backgrounds/Complication.png'); }
+#step-details     { --step-bg: url('../resources/backgrounds/Details.png'); }
+#step-summary     { --step-bg: url('../resources/backgrounds/Summary.png'); }
 
 .step-container.active::before {
   content: '';
