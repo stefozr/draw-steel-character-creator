@@ -256,9 +256,11 @@ DS.App = (function() {
     var playerName = DS.Player.getName();
 
     // Player header
+    var adminOn = DS.Player.isAdmin();
     var html = '<div class="player-header">' +
       '<span class="player-label">Playing as: <strong>' + DS.Renderer.esc(playerName) + '</strong></span>' +
       ' <a href="#" class="player-change-link" id="change-player-name">Change</a>' +
+      ' <a href="#" class="player-change-link" id="toggle-admin">' + (adminOn ? 'Admin: ON' : 'Admin: OFF') + '</a>' +
     '</div>';
 
     // Split into mine and others
@@ -294,7 +296,7 @@ DS.App = (function() {
     otherPlayers.forEach(function(owner) {
       html += '<h2>' + DS.Renderer.esc(owner) + '\'s Characters</h2>';
       othersByPlayer[owner].forEach(function(c) {
-        html += renderCharCard(c, false);
+        html += renderCharCard(c, adminOn);
       });
     });
 
@@ -353,6 +355,15 @@ DS.App = (function() {
             });
           }
         });
+      });
+    }
+
+    var adminLink = container.querySelector('#toggle-admin');
+    if (adminLink) {
+      adminLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        DS.Player.setAdmin(!DS.Player.isAdmin());
+        renderCharacterList();
       });
     }
   }

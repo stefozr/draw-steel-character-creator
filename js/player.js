@@ -1,6 +1,7 @@
 // DS.Player - Player identity management
 DS.Player = (function() {
   var STORAGE_KEY = 'drawsteel_player_name';
+  var ADMIN_KEY = 'drawsteel_admin';
 
   function getName() {
     return localStorage.getItem(STORAGE_KEY) || '';
@@ -10,8 +11,20 @@ DS.Player = (function() {
     localStorage.setItem(STORAGE_KEY, name.trim());
   }
 
+  function isAdmin() {
+    return localStorage.getItem(ADMIN_KEY) === 'true';
+  }
+
+  function setAdmin(bool) {
+    if (bool) {
+      localStorage.setItem(ADMIN_KEY, 'true');
+    } else {
+      localStorage.removeItem(ADMIN_KEY);
+    }
+  }
+
   function isOwner(char) {
-    return char.playerName === getName();
+    return isAdmin() || char.playerName === getName();
   }
 
   function ensureName(callback) {
@@ -66,6 +79,8 @@ DS.Player = (function() {
     getName: getName,
     setName: setName,
     isOwner: isOwner,
+    isAdmin: isAdmin,
+    setAdmin: setAdmin,
     ensureName: ensureName
   };
 })();
