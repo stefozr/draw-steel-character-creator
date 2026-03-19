@@ -109,6 +109,14 @@
     return;
   }
 
+  // --- Set skills and languages on actor ---
+  const skills = (data.skills || []).map(s => s.toLowerCase());
+  const languages = (data.languages || []).map(l => l.toLowerCase());
+  await actor.update({
+    "system.skills.value": skills,
+    "system.biography.languages": languages,
+  });
+
   // --- Set portrait if present ---
   if (data.portrait && data.portrait.startsWith("data:image")) {
     try {
@@ -253,8 +261,7 @@
     msg += "</ul>";
   }
 
-  msg += "<p><em>Skills and languages are not directly importable as items — " +
-    "verify them on the character sheet.</em></p>";
+  msg += "<p><em>Skills and languages imported — verify on character sheet.</em></p>";
   msg +=
     "<p><strong>Skills:</strong> " + (data.skills?.join(", ") || "none") + "</p>";
   msg +=
